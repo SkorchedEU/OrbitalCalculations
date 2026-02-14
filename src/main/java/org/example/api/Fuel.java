@@ -1,14 +1,14 @@
 package org.example.api;
 
 public class Fuel {
-    private final double energyDensity;
+    private final double specificImpulse;
 
-    public Fuel(double energyDensity) {
-        this.energyDensity = energyDensity;
+    public Fuel(double specificImpulse) {
+        this.specificImpulse = specificImpulse;
     }
 
-    public double getEnergyDensity() {
-        return energyDensity;
+    public double getSpecificImpulse() {
+        return specificImpulse;
     }
 
 

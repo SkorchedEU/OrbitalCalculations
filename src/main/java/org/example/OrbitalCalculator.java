@@ -14,7 +14,8 @@ public class OrbitalCalculator {
      * @return Effective Exhaust Velocity (v_e)
      */
     public static double calculateEffectiveExhaustVelocity(SpaceBody launchBody, Rocket rocket) {
-        return rocket.getSpecificImpulse() * launchBody.getMass();
+        return rocket.getPropellant().getSpecificImpulse() *
+                (launchBody.getMass() * gravitationalConstant) / Math.pow(launchBody.getRadius(), 2);
     }
 
     /**
@@ -37,7 +38,6 @@ public class OrbitalCalculator {
      * @param centerBody The Celestial Body from which main source of Gravity in system
      * @param targetBody The Celestial Body for arrival orbit
      * @param startRadius The starting orbital radius (surface height for base launch)
-     * @param endRadius The aphelion of resulting elliptical orbit
      * @return DeltaV required for stage 1 of orbit transfer
      */
     public static double calculateHohmannV1(SpaceBody launchBody, SpaceBody targetBody, SystemCenter centerBody,
@@ -71,14 +71,14 @@ public class OrbitalCalculator {
 
     /**
      * Calculates the DeltaV required to correct elliptical orbit into circular (stage 2)
-     * @param body The Celestial Body from which gravity is mainly felt
-     * @param startRadius The starting orbital radius (surface height for base launch)
+     * @param centerBody The Celestial Body from which gravity is mainly felt
+     * @param launchBody The Celestial Body for starting orbit
+     * @param targetBody The Celestial Body for arrival orbit
      * @param endRadius The final orbital radius
      * @return DeltaV required for stage 2 of orbit transfer
      */
     public static double calculateHohmannV2(SpaceBody launchBody, SpaceBody targetBody, SystemCenter centerBody,
                                             double endRadius) {
-        //TODO
 
         /*
          * Most of this is renaming readable variables to fit standard notation for calculation, and legibility
@@ -132,8 +132,24 @@ public class OrbitalCalculator {
         return  Math.round((v_1+ v_2)*100) / 100.0;
     }
 
-    public static double calculateEnergyForHohmann(SpaceBody launchBody,
-                                                   double startRadius, double endRadius) {
-        return 0;
+    public static double calculateRequiredFuelVolume(SpaceBody launchBody, Rocket rocket, double deltaV) {
+        final double effectiveExhaust = calculateEffectiveExhaustVelocity(launchBody, rocket);
+        return rocket.getBaseMass() * ( Math.exp(deltaV/effectiveExhaust) - 1);
+    }
+
+    public static double calculateEscapeVelocity(SpaceBody launchBody) {
+        return Math.sqrt( (2 * gravitationalConstant * launchBody.getMass()) / launchBody.getRadius());
+    }
+
+    /**
+     * Calculates the DeltaV required to escape gravitational pull of launch body, and land safely on target body
+     * @param launchBody The Celestial Body from which to launch
+     * @param targetBody The Celestial Body at which to arrive
+     * @return The total deltaV required to
+     */
+    public static double calculateDirectDeltaV(SpaceBody launchBody, SpaceBody targetBody) {
+        return calculateEscapeVelocity(launchBody) + calculateEscapeVelocity(targetBody);
     }
 }
+
+

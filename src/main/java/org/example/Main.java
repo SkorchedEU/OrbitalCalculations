@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.api.Fuel;
 import org.example.api.Rocket;
 import org.example.api.SpaceBody;
 import org.example.api.SystemCenter;
@@ -8,11 +9,14 @@ import org.example.api.SystemCenter;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        Rocket rocket = new Rocket(100000,2000, 300);
-        SpaceBody earth = new SpaceBody(6.42 * Math.pow(10,23),
+        Fuel diesel = new Fuel(3000);
+        Rocket rocket = new Rocket(10000,200_000);
+        rocket.setPropellant(diesel);
+        rocket.addFuel(0);
+        SpaceBody earth = new SpaceBody(5.97 * Math.pow(10,24),
                 6_371_000,
                 1.496 * Math.pow(10,11));
-        SpaceBody mars = new SpaceBody(5.97 * Math.pow(10,24),
+        SpaceBody mars = new SpaceBody(6.417 * Math.pow(10,23),
                 3_389_500,
                 2.28 * Math.pow(10,11));
         SystemCenter sun = new SystemCenter(1.99 * Math.pow(10, 30));
@@ -22,6 +26,20 @@ public class Main {
                 earth.getRadius() + 300_000, mars.getRadius()+100_000);
 
         System.out.println("Hohmann deltaV total: " + hohmannDeltaV);
+
+        final double pureDeltaV = OrbitalCalculator.calculateDirectDeltaV(earth, mars);
+        System.out.println("Pure deltaV total: " + pureDeltaV);
+
+        final double requiredPureVolume = OrbitalCalculator.calculateRequiredFuelVolume(earth, rocket, pureDeltaV);
+        System.out.println("Required pure deltaV total: " + requiredPureVolume);
+
+        final double requiredVolume = OrbitalCalculator.calculateRequiredFuelVolume(earth, rocket, hohmannDeltaV);
+        System.out.println("Required volume: " + requiredVolume);
+        final double requiredDirectVolume = OrbitalCalculator.calculateRequiredFuelVolume(earth, rocket, pureDeltaV);
+        System.out.println("Required direct volume: " + requiredDirectVolume);
+
+
+
 
     }
 }
