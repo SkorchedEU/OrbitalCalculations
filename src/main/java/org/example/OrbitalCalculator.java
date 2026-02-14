@@ -14,7 +14,9 @@ public class OrbitalCalculator {
      * @return Effective Exhaust Velocity (v_e)
      */
     public static double calculateEffectiveExhaustVelocity(SpaceBody launchBody, Rocket rocket) {
-        return rocket.getSpecificImpulse() * launchBody.getMass();
+        System.out.println("g_0: " + (launchBody.getMass() * gravitationalConstant) / Math.pow(launchBody.getRadius(), 2));
+        return rocket.getSpecificImpulse() *
+                (launchBody.getMass() * gravitationalConstant) / Math.pow(launchBody.getRadius(), 2);
     }
 
     /**
@@ -132,8 +134,8 @@ public class OrbitalCalculator {
         return  Math.round((v_1+ v_2)*100) / 100.0;
     }
 
-    public static double calculateEnergyForHohmann(SpaceBody launchBody,
-                                                   double startRadius, double endRadius) {
-        return 0;
+    public static double calculateRequiredFuelVolume(SpaceBody launchBody, Rocket rocket, double deltaV) {
+        final double effectiveExhaust = calculateEffectiveExhaustVelocity(launchBody, rocket);
+        return rocket.getBaseMass() * ( Math.exp(deltaV/effectiveExhaust) - 1);
     }
 }
