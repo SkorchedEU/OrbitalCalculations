@@ -9,8 +9,10 @@ import org.example.api.SystemCenter;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        Fuel diesel = new Fuel(39_600_000);
-        Rocket rocket = new Rocket(10000,200_000, 300);
+        Fuel diesel = new Fuel(3000);
+        Rocket rocket = new Rocket(10000,200_000);
+        rocket.setPropellant(diesel);
+        rocket.addFuel(0);
         SpaceBody earth = new SpaceBody(5.97 * Math.pow(10,24),
                 6_371_000,
                 1.496 * Math.pow(10,11));

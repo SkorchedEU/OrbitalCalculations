@@ -14,8 +14,7 @@ public class OrbitalCalculator {
      * @return Effective Exhaust Velocity (v_e)
      */
     public static double calculateEffectiveExhaustVelocity(SpaceBody launchBody, Rocket rocket) {
-        System.out.println("g_0: " + (launchBody.getMass() * gravitationalConstant) / Math.pow(launchBody.getRadius(), 2));
-        return rocket.getSpecificImpulse() *
+        return rocket.getPropellant().getSpecificImpulse() *
                 (launchBody.getMass() * gravitationalConstant) / Math.pow(launchBody.getRadius(), 2);
     }
 
@@ -39,7 +38,6 @@ public class OrbitalCalculator {
      * @param centerBody The Celestial Body from which main source of Gravity in system
      * @param targetBody The Celestial Body for arrival orbit
      * @param startRadius The starting orbital radius (surface height for base launch)
-     * @param endRadius The aphelion of resulting elliptical orbit
      * @return DeltaV required for stage 1 of orbit transfer
      */
     public static double calculateHohmannV1(SpaceBody launchBody, SpaceBody targetBody, SystemCenter centerBody,
@@ -73,8 +71,9 @@ public class OrbitalCalculator {
 
     /**
      * Calculates the DeltaV required to correct elliptical orbit into circular (stage 2)
-     * @param body The Celestial Body from which gravity is mainly felt
-     * @param startRadius The starting orbital radius (surface height for base launch)
+     * @param centerBody The Celestial Body from which gravity is mainly felt
+     * @param launchBody The Celestial Body for starting orbit
+     * @param targetBody The Celestial Body for arrival orbit
      * @param endRadius The final orbital radius
      * @return DeltaV required for stage 2 of orbit transfer
      */

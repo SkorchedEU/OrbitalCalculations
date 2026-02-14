@@ -4,13 +4,11 @@ public class Rocket {
     private double baseMass;
     private double fuelMass;
     private double maxFuelStorage;
-    private double specificImpulse;
     private Fuel propellant;
 
-    public Rocket(double baseMass, double maxFuelStorage, double specificImpulse) {
+    public Rocket(double baseMass, double maxFuelStorage) {
         this.baseMass = baseMass;
         this.maxFuelStorage = maxFuelStorage;
-        this.specificImpulse = specificImpulse;
         this.fuelMass = 0;
     }
 
@@ -28,14 +26,6 @@ public class Rocket {
 
     public void setMaxFuelStorage(double maxFuelStorage) {
         this.maxFuelStorage = maxFuelStorage;
-    }
-
-    public double getSpecificImpulse() {
-        return specificImpulse;
-    }
-
-    public void setSpecificImpulse(double specificImpulse) {
-        this.specificImpulse = specificImpulse;
     }
 
     public Fuel getPropellant() {
