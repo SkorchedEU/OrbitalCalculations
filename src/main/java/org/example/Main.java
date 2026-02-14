@@ -27,8 +27,18 @@ public class Main {
 
         System.out.println("Hohmann deltaV total: " + hohmannDeltaV);
 
+        final double pureDeltaV = OrbitalCalculator.calculateDirectDeltaV(earth, mars);
+        System.out.println("Pure deltaV total: " + pureDeltaV);
+
+        final double requiredPureVolume = OrbitalCalculator.calculateRequiredFuelVolume(earth, rocket, pureDeltaV);
+        System.out.println("Required pure deltaV total: " + requiredPureVolume);
+
         final double requiredVolume = OrbitalCalculator.calculateRequiredFuelVolume(earth, rocket, hohmannDeltaV);
         System.out.println("Required volume: " + requiredVolume);
+        final double requiredDirectVolume = OrbitalCalculator.calculateRequiredFuelVolume(earth, rocket, pureDeltaV);
+        System.out.println("Required direct volume: " + requiredDirectVolume);
+
+
 
 
     }
